@@ -7,7 +7,7 @@
 
       <!-- Menü Toggler (hamburger buton) -->
       <div class="p-4">
-        <button @click="toggleMenu" class="text-white hover:text-red-700 ">
+        <button @click="toggleMenu" class="text-white hover:text-red-700 cursor-pointer ">
           <!-- Hamburger ikonu -->
           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -16,24 +16,27 @@
       </div>
 
       <!-- Açılır Menü -->
-      <div v-if="menuOpen" class="fixed top-0 left-0 w-[150px] h-[250px] bg-gray-800 z-30 shadow-lg p-6 flex flex-col">
+      <div v-if="menuOpen" class="fixed top-0 left-0 w-[150px] h-[200px] bg-gray-800 z-30 shadow-lg p-6 flex flex-col">
         <ul class="py-1">
           <li>
             <router-link :to="{ name: 'movies' }"><a href="#" class="block px-4 py-2 hover:bg-gray-700">Movies</a>
             </router-link>
           </li>
+          <!-- <li>
+            <router-link :to="{ name: 'films' }"><a href="#" class="block px-4 py-2 hover:bg-gray-700">Films</a>
+            </router-link>
+          </li> -->
           <li>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Films</a>
-          </li>
-          <li>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-700">TV Shows</a>
+            <router-link :to="{ name: 'tvShows' }"><a href="#" class="block px-4 py-2 hover:bg-gray-700">TV Shows</a>
+            </router-link>
           </li>
           <li>
             <router-link :to="{ name: 'favorite' }"><a href="#"
                 class="block px-4 py-2 hover:bg-gray-700">Favorites</a></router-link>
           </li>
           <li>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Genres</a>
+            <router-link :to="{ name: 'genres' }"><a href="#" class="block px-4 py-2 hover:bg-gray-700">Genres</a>
+            </router-link>
           </li>
         </ul>
 
@@ -42,7 +45,7 @@
 
       </div>
       <!-- Logo -->
-      <div class="relative flex mb-4">
+      <div class="relative flex justify-start mb-4">
 
         <!-- <div
           v-if="isDropdownOpen"
