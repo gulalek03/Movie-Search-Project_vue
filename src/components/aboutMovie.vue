@@ -19,8 +19,8 @@
           {{ selectedMovie.tagline }}
         </p>
         <p class="text-lg leading-relaxed mb-6">{{ selectedMovie.overview }}</p>
-        
-        
+
+
 
         <div class="mt-6 text-sm text-gray-300 space-y-1">
           <div><span class="font-semibold text-white">Release Date:</span> {{ selectedMovie.release_date }}</div>
@@ -38,10 +38,36 @@
           </div>
           <div v-if="selectedMovie.homepage">
             <span class="font-semibold text-white">Homepage:</span>
+           
             <a :href="selectedMovie.homepage" target="_blank" class="text-blue-400 hover:underline ml-2">
-              Visit Site
-            </a>
+                Visit Site
+              </a>
+
+
+
+
+            
+
+
+
+
+
+
+
           </div>
+          <button @click="toggleFavorite"
+              class="px-5 py-2 rounded-full flex items-center space-x-2 transition-colors duration-200 mt-5"
+              :class="isFavorite ? 'bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 ' : 'bg-gray-700 hover:bg-gray-600'">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path v-if="isFavorite"
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.683-1.539 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.565-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.927 8.72c-.783-.57-.38-1.81.588-1.81h3.462a1 1 0 00.95-.69l1.07-3.292z">
+                </path>
+                <path v-else fill-rule="evenodd"
+                  d="M10 2a1 1 0 01.9.623l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.683-1.539 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.565-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.927 8.72c-.783-.57-.38-1.81.588-1.81h3.462a1 1 0 00.95-.69L9.098 2.623A1 1 0 0110 2zm0 3.328L9.305 7.1a1 1 0 00-.95.69h-3.462L3.927 8.72l2.8 2.034a1 1 0 00.364 1.118l-1.07 3.292 2.8-2.034a1 1 0 001.175 0l2.8 2.034-1.07-3.292a1 1 0 00.364-1.118l2.8-2.034-2.457-1.782a1 1 0 00-.95-.69H10z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              <span>{{ isFavorite ? 'Remove' : 'Add to favorities' }}</span>
+            </button>
         </div>
       </div>
     </div>
@@ -63,20 +89,24 @@
 
 
     <div v-else class="relative z-10 flex justify-center items-center h-screen text-3xl font-semibold">
-      Loading movie details...
+      Loading...
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="lucide lucide-loader-circle-icon lucide-loader-circle">
+        <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+      </svg>
     </div>
   </div>
 
 </template>
 
 <script setup>
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watchEffect,onMounted, watch  } from 'vue';
 import { useRoute } from 'vue-router';
-
 const route = useRoute();
 const selectedMovie = ref({});
 const movieCast = ref([]);
-
+const favoriteMovies=ref([])
 const requestOptions = {
   method: 'GET',
   headers: {
@@ -121,6 +151,11 @@ const fetchMovie = async (movieId) => {
     selectedMovie.value = movieData;
     movieCast.value = creditsData.cast ? creditsData.cast.slice(0, 15) : [];
 
+ const local=JSON.parse(localStorage.getItem('favoriteMovies'));
+  if(local.length>0){
+    favoriteMovies.value = [...local]
+  }
+
   } catch (error) {
     console.error("Film detayları veya oyuncu kadrosu alınırken hata oluştu:", error);
   }
@@ -139,14 +174,59 @@ const containerStyle = computed(() => {
 });
 
 watchEffect(() => {
+  console.log(route.params.id,'sss');
+  
   if (route.params.id) {
     fetchMovie(route.params.id);
   }
 });
 
 
+onMounted(()=>{
+ 
+})
+
+// // Eğer ayrı bir bileşenseniz, prop'u tanımlayın
+// const props = defineProps({
+//   movieId: {
+//     type: Number,
+//     required: true
+//   }
+// });
+
+
+// Favori durumunu localStorage'dan kontrol eden fonksiyon
+
+
+// Butona tıklandığında çağrılan fonksiyon
+const toggleFavorite = () => {
+  // Mevcut favori filmler listesini al
+  console.log('toggke',selectedMovie.value);
+  
+  const id = route.params.id; // Veya MovieDetail.vue içindeyseniz selectedMovie.value.id
+  const index = favoriteMovies.value.findIndex(movi => movi.id===selectedMovie.value.id)
+
+  
+  if (index===-1) {
+    // Eğer zaten favoride ise, listeden kaldır
+     favoriteMovies.value.push(selectedMovie.value);
+  } else {
+    // Eğer favoride değilse, listeye ekle
+   
+    const spliced = favoriteMovies.value.splice(index,1);
+    console.log(spliced[0].id,'togg');
+    
+  }
+
+  // Güncellenmiş listeyi localStorage'a geri kaydet
+  localStorage.setItem('favoriteMovies', JSON.stringify(favoriteMovies.value));
+
+  // isFavorite durumunu tersine çevir (UI'ı güncellemek için)
+};
+
+// Bileşen yüklendiğinde ve movieId değiştiğinde durumu kontrol et
+ const isFavorite=computed(()=>favoriteMovies.value.find((e)=>selectedMovie.value.id==e.id)) 
+
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

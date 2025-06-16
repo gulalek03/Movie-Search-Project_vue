@@ -2,11 +2,55 @@
   <div class="">
     <nav
       class="absolute top-0 left-0 w-full z-50 bg-blur-sm  text-white h-[80px] flex items-center justify-between shadow-lg">
+      <!-- Arka plan karartması -->
+      <div v-if="menuOpen" class="fixed inset-0 bg-opacity-30 z-20 backdrop-blur-sm" @click="toggleMenu"></div>
+
+      <!-- Menü Toggler (hamburger buton) -->
+      <div class="p-4">
+        <button @click="toggleMenu" class="text-white hover:text-red-700 ">
+          <!-- Hamburger ikonu -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Açılır Menü -->
+      <div v-if="menuOpen" class="fixed top-0 left-0 w-[150px] h-[250px] bg-gray-800 z-30 shadow-lg p-6 flex flex-col">
+        <ul class="py-1">
+          <li>
+            <router-link :to="{ name: 'movies' }"><a href="#" class="block px-4 py-2 hover:bg-gray-700">Movies</a>
+            </router-link>
+          </li>
+          <li>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Films</a>
+          </li>
+          <li>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-700">TV Shows</a>
+          </li>
+          <li>
+            <router-link :to="{ name: 'favorite' }"><a href="#"
+                class="block px-4 py-2 hover:bg-gray-700">Favorites</a></router-link>
+          </li>
+          <li>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Genres</a>
+          </li>
+        </ul>
+
+
+
+
+      </div>
       <!-- Logo -->
-      <div class="relative flex items-center space-x-3 ml-[100px]">
-        <img src="/image.svg" alt="Logo" class="w-[96px] h-[48px]">
+      <div class="relative flex mb-4">
 
-
+        <!-- <div
+          v-if="isDropdownOpen"
+          class="absolute top-full right-full mt-2 mr-2 bg-gray-800 text-white rounded-md shadow-lg z-10"
+          ref="dropdownMenuRef" 
+          >
+        </div> -->
+        <img id="menuLogo" src="/image.svg" alt="Logo" class="w-[96px] h-[42px] ">
       </div>
 
       <div class="relative flex justify-center items-center h-[50px]">
@@ -25,7 +69,8 @@
       </div>
 
       <!-- Buttons -->
-      <div class="space-x-4 mr-[100px] py-5">
+      <div class="space-x-4 mr-[100px] py-5 flex">
+
         <button
           class="hover:bg-white/20 hover:backdrop-blur-sm cursor-pointer w-[97px] h-[44px] px-4 py-2 bg-transparent border border-white rounded-xl transition">
           Log In
@@ -87,9 +132,23 @@ onMounted(async () => {
   } catch (error) {
     console.error("API request failed:", error)
   }
-searchText.value= route.query.search
+  searchText.value = route.query.search
   // router.push('/')
 })
+
+
+
+
+
+
+
+
+const menuOpen = ref(false)
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value
+}
+
+
 
 
 </script>
