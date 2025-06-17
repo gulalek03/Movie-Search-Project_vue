@@ -1,6 +1,7 @@
 <template>
 
     <div class="min-h-screen bg-black p-6 relative">
+        
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <div v-for="(item, index) in movies" :key="index" class="mb-10 bg-gray-200 rounded-xl shadow transition-transform duration-300 transform hover:scale-110 hover:z-50 ">

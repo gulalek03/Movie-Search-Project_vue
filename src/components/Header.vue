@@ -45,7 +45,7 @@
 
       </div>
       <!-- Logo -->
-      <div class="relative flex justify-start mb-4">
+      <div class="absolute flex justify-start mb-5 ml-[55px]">
 
         <!-- <div
           v-if="isDropdownOpen"
@@ -53,10 +53,10 @@
           ref="dropdownMenuRef" 
           >
         </div> -->
-        <img id="menuLogo" src="/image.svg" alt="Logo" class="w-[96px] h-[42px] ">
+        <img id="menuLogo" src="/image.svg" alt="Logo" class="w-[96px] h-[42px]">
       </div>
 
-      <div class="relative flex justify-center items-center h-[50px]">
+      <div class="relative flex justify-center items-center h-[50px] ml-[290px]">
         <form action="" @submit.prevent="searchToText">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 absolute top-1/2 left-3 -translate-y-1/2 text-white"
             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -138,13 +138,6 @@ onMounted(async () => {
   searchText.value = route.query.search
   // router.push('/')
 })
-
-
-
-
-
-
-
 
 const menuOpen = ref(false)
 const toggleMenu = () => {

@@ -44,11 +44,6 @@
             <a :href="selectedMovie.homepage" target="_blank" class="text-blue-400 hover:underline ml-2">
               Visit Site
             </a>
-
-
-
-
-
           </div>
           <button @click="toggleFavorite"
             class="px-5 py-2 rounded-full flex items-center space-x-2 transition-colors duration-200 mt-5"
